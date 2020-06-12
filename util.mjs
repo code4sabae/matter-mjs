@@ -86,8 +86,8 @@ const useDeviceMotionWorld = (world) => {
 		// ball.WakeUp();
 		var xg = e.accelerationIncludingGravity.x;
 		var yg = e.accelerationIncludingGravity.y;
-		world.gravity.x = xg * 30;
-		world.gravity.y = -yg * 30;
+		world.gravity.x = xg; // * 30;
+		world.gravity.y = -yg; // * 30;
 	};
 };
 
