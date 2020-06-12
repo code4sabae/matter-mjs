@@ -81,14 +81,14 @@ const useDeviceMotionWorld = (world) => {
 	}
 	// Androidは逆!?
 	// window.addEventListener("devicemotion", (e) => {
+  const yflg = window.navigator.userAgent.indexOf("Android") >= 0 ? -1 : 1;
 	window.ondevicemotion = (e) => {
 		if (e.accelerationIncludingGravity.x === null) return;
 		// ball.WakeUp();
 		var xg = e.accelerationIncludingGravity.x;
-    var yg = e.accelerationIncludingGravity.y;
-    console.log(xg, yg);
-    world.gravity.x = xg * 0.01;
-    world.gravity.y = -yg * 0.01;
+    var yg = e.accelerationIncludingGravity.y * yflg;
+    world.gravity.x = xg / 9.8;
+    world.gravity.y = -yg / 9.8;
 	};
 };
 

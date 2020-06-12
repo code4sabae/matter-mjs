@@ -1,4 +1,4 @@
-import { Matter, createWorldFullscreen } from "https://code4sabae.github.io/matter-mjs/util.mjs";
+import { Matter, createWorldFullscreen } from "https://code4sabae.github.io/matter-mjs/util.mjs?";
 const { Bodies, Body } = Matter;
 
 window.onload = () => {
