@@ -1,41 +1,10 @@
-import Matter from "../matter.min.mjs";
-
-const { Engine, Render, Runner, World, Bodies } = Matter;
+import { Matter, createWorldFullscreen } from "https://code4sabae.github.io/matter-mjs/matter.util.mjs";
+const { Bodies } = Matter;
 
 window.onload = () => {
-  const engine = Engine.create();
-  const world = engine.world;
-
-  const element = document.body;
-  const render = Render.create({
-    element, engine,
-    options: {
-      width: window.innerWidth,
-      height: window.innerHeight,
-      background: '#FFFFFF',
-      wireframes: false,
-    }
-  });
-  element.style.margin = "0";
-  element.style.padding = "0";
-  element.style.overflow = "hidden";
-    /*
-  window.onresize = () => {
-    render.options.width = window.innerWidth;
-    render.options.height = window.innerHeight;
-    render.canvas.style.width = window.innerWidth + "px";
-    render.canvas.style.height = window.innerHeight + "px";
-  };
-    */
-
-  Render.run(render);
-
-  const runner = Runner.create();
-  Runner.run(runner, engine);
-
-  const rect = Bodies.rectangle(500, 0, 100, 80);
-  const circle = Bodies.circle(200, 0, 50);
-  const base = Bodies.rectangle(400, 350, 800, 30, { isStatic: true });
-
-  World.add(world, [rect, circle, base]);
+  const world = createWorldFullscreen();
+  const [w, h] = [world.width, world.height];
+  world.add(Bodies.rectangle(w / 3, 0, w / 10, h / 4));
+  world.add(Bodies.circle(w / 3 * 2, 0, w / 10));
+  world.add(Bodies.rectangle(w / 2, h / 5 * 4, w * .9, h / 10, { isStatic: true }));
 };
