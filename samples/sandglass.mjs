@@ -31,7 +31,6 @@ window.onload = () => {
 	for (let i = 0; i < nballs; i++) {
 		world.add(Bodies.circle(cx + (sw - ww * 2) * (Math.random() - .5), ww + (sh / 4) * Math.random(), bw));
 	}
-
 	document.body.onclick = () => {
 		world.useRealGravity(); // 傾きセンサーを重力に反映（対応していたら）
 		world.gravity.y = -world.gravity.y; // 重力反転
