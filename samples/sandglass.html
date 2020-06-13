@@ -2,48 +2,50 @@
 <title>sandglass - matter-es</title>
 <meta property="og:image" content="sandglass.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head><body>
 <script type="module">
+
 import { Matter, createWorld } from "https://js.sabae.cc/matter.mjs";
 const { Bodies, Body } = Matter;
 
-window.onload = () => {
-	const world = createWorld();
-	const [w, h] = [500, 1000];
-	world.width = w;
+const world = createWorld();
+const [w, h] = [500, 1000];
+world.width = w;
 
-	const nballs = 400;
+const nballs = 400;
 
-	const cx = w / 2;
-	const cy = h / 2;
-	const ww = h / 40;
+const cx = w / 2;
+const cy = h / 2;
+const ww = h / 40;
 
-	const createWall = (x, y, width, height, angle) => {
-		const base = Bodies.rectangle(x, y, width * 2, height * 2, { isStatic: true });
-		Body.rotate(base, angle);
-		return base;
-	}
-	world.add(createWall(cx - w / 2, cy, ww, h / 2 + ww, 0));
-	world.add(createWall(cx + w / 2, cy, ww, h / 2 + ww, 0));
-	world.add(createWall(cx, 0, ww, w / 2, Math.PI / 2));
-	world.add(createWall(cx, h, ww, w / 2, Math.PI / 2));
-	
-	const hole = w / 6;
-	const hw = ww / 2;
-	const hgap = h / 15;
-	const th = Math.PI / 6;
-	world.add(createWall(cx - (w + hole) / 4, cy - hgap, w / 4, hw, th));
-	world.add(createWall(cx + (w + hole) / 4, cy - hgap, w / 4, hw, -th));
-	world.add(createWall(cx - (w + hole) / 4, cy + hgap, w / 4, hw, -th));
-	world.add(createWall(cx + (w + hole) / 4, cy + hgap, w / 4, hw, th));
-
-	const bw = w / 60;
-	for (let i = 0; i < nballs; i++) {
-		world.add(Bodies.circle(cx + (w - ww * 2) * (Math.random() - .5), ww + (h / 4) * Math.random(), bw));
-	}
-	document.body.onclick = () => {
-		world.useRealGravity(); // 傾きセンサーを重力に反映（対応していたら）
-		world.gravity.y = -world.gravity.y; // 重力反転
-	};
+const createWall = (x, y, w, h, th) => {
+	const base = Bodies.rectangle(x, y, w * 2, h * 2, { isStatic: true });
+	Body.rotate(base, th);
+	return base;
 }
+world.add(createWall(cx - w / 2, cy, ww, h / 2 + ww, 0));
+world.add(createWall(cx + w / 2, cy, ww, h / 2 + ww, 0));
+world.add(createWall(cx, 0, ww, w / 2, Math.PI / 2));
+world.add(createWall(cx, h, ww, w / 2, Math.PI / 2));
+
+const hole = w / 6;
+const hw = ww / 2;
+const hgap = h / 15;
+const th = Math.PI / 6;
+world.add(createWall(cx - (w + hole) / 4, cy - hgap, w / 4, hw, th));
+world.add(createWall(cx + (w + hole) / 4, cy - hgap, w / 4, hw, -th));
+world.add(createWall(cx - (w + hole) / 4, cy + hgap, w / 4, hw, -th));
+world.add(createWall(cx + (w + hole) / 4, cy + hgap, w / 4, hw, th));
+
+const bw = w / 60;
+for (let i = 0; i < nballs; i++) {
+	world.add(Bodies.circle(cx + (w - ww * 2) * (Math.random() - .5), ww + (h / 4) * Math.random(), bw));
+}
+
+document.body.onclick = () => {
+	world.useRealGravity(); // 傾きセンサーを重力に反映（対応していたら）
+	world.gravity.y = -world.gravity.y; // 重力反転
+};
+
 </script>
-</head></html>
+</body></html>
