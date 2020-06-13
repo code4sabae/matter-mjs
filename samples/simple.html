@@ -1,18 +1,16 @@
 <!DOCTYPE HTML><html lang="ja"><head><meta charset="utf-8">
 <title>simple - matter.mjs</title>
-</head>
-<body>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script type="module">
-import { Matter, createWorldFullscreen } from "https://code4sabae.github.io/matter-mjs/util.mjs";
+import { Matter, createWorld } from "https://js.sabae.cc/matter.mjs";
 const { Bodies } = Matter;
 
 window.onload = () => {
-  const world = createWorldFullscreen();
-  const [w, h] = [world.width, world.height];
-  world.add(Bodies.rectangle(w / 3, 0, w / 10, h / 4));
-  world.add(Bodies.circle(w / 3 * 2, 0, w / 10));
-  world.add(Bodies.rectangle(w / 2, h / 5 * 4, w * .9, h / 10, { isStatic: true }));
+  const world = createWorld(document.body);
+  world.add(Bodies.rectangle(500, 0, 100, 200));
+  world.add(Bodies.circle(250, 0, 100));
+  world.add(Bodies.circle(750, 0, 100));
+  world.add(Bodies.circle(500, 1800, 1100, { isStatic: true }));
 };
 </script>
-</body>
-</html>
+</head></html>

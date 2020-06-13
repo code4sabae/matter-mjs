@@ -1,11 +1,53 @@
+import canvasutil from "https://code4fukui.github.io/jigaku/lib/jigaku.mjs";
 import Matter from "https://code4sabae.github.io/matter-mjs/matter.min.mjs";
-
 const { Engine, Render, Runner, World, Bodies } = Matter;
 
-const getRenderFullscreen = (engine) => {
-  const orgw = window.innerWidth;
-  const orgh = window.innerHeight;
-  const element = document.body;
+const startRender = (engine, element) => {
+  const canvas = canvasutil.createFullCanvas();
+  
+  const drawWorld = (g) => {
+    g.setColor(0, 0, 0);
+    const bodies = Matter.Composite.allBodies(engine.world);
+    for (const body of bodies) {
+      if (!body.render.visible) continue;
+      const p = body.position;
+      // console.log(body);
+      // g.fillCircle(p.x, p.y, 10);
+      g.fillStyle = body.render.fillStyle;
+      g.beginPath();
+      const v = body.vertices;
+      g.moveTo(v[0].x, v[0].y);
+      for (let i = 1; i < v.length; i++) {
+        g.lineTo(v[i].x, v[i].y);
+      }
+      g.closePath();
+      g.fill();
+    }
+  };
+
+  const size = [1000, 1000];
+  canvas.draw = (g, cw, ch) => {
+    g.setColor(255, 255, 255);
+    g.fillRect(0, 0, cw, ch);
+    g.save();
+    const [sw, sh] = size;
+    const r = Math.min(cw / sw, ch / sh);
+    const offx = (cw - sw * r) / 2;
+    const offy = (ch - sh * r) / 2;
+    g.setTransform(r, 0, 0, r, offx, offy);
+    drawWorld(g);
+    g.restore();
+  };
+  const f = () => {
+    // this.world.Step(1 / 60, 1);
+    canvas.redraw();
+  };
+  setInterval(f, 1 / 60);
+  return size;
+}
+const createRender = (engine, element) => {
+  const orgw = 1000; // window.innerWidth;
+  const orgh = 1000; // window.innerHeight;
   const render = Render.create({
     element, engine,
     options: {
@@ -30,6 +72,7 @@ const getRenderFullscreen = (engine) => {
     const [rw, rh] = [orgw / w, orgh / h];
     let maxx, maxy;
     let [offx, offy] = [0, 0];
+    /*
     if (rw < rh) {
       maxx = orgw * rh;
       maxy = orgh * rh;
@@ -41,16 +84,39 @@ const getRenderFullscreen = (engine) => {
       offy = (orgh * rh - maxy) / 2;
       maxy += offy / 2;
     }
+    */
+    const pw = window.devicePixelRatio;
+    console.log(pw);
+    if (rw < rh) {
+      maxx = orgw * rh;
+      maxy = orgh * rh;
+      offx = -(w - maxx / pw) / 2;
+      maxx += offx / 2;
+    } else {
+      maxx = orgw * rw;
+      maxy = orgh * rw;
+      offy = -(h - maxy / pw) / 2;
+      maxy += offy / 2;
+    }
+    /*
+    element.style.left = offx + "px";
+    element.style.top = offy + "px";
+    */
+    console.log(offx, offy, orgw, orgh, w, h, maxx, maxy);
+    
+    //render.bounds = { min: { x: 0, y: 0 }, max: { x: maxx, y: maxy}};
     render.bounds = { min: { x: offx, y: offy }, max: { x: maxx, y: maxy}};
   };
+  window.onresize();
   return render;
 };
 
-const createWorldFullscreen = () => {
+const createWorld = (element) => {
   const engine = Engine.create();
   const world = engine.world;
-  const render = getRenderFullscreen(engine);
-  Render.run(render);
+  // const render = createRender(engine, element);
+  // Render.run(render);
+  const size = startRender(engine, element);
   const runner = Runner.create();
   Runner.run(runner, engine);
   return {
@@ -58,10 +124,16 @@ const createWorldFullscreen = () => {
       World.add(world, body);
     },
     get width () {
-      return render.canvas.width;
+      return size[0]; //render.canvas.width;
+    },
+    set width (n) {
+      size[0] = n;
     },
     get height () {
-      return render.canvas.height;
+      return size[1]; // render.canvas.height;
+    },
+    set height (n) {
+      size[1] = n;
     },
     get gravity () {
       return world.gravity;
@@ -92,4 +164,4 @@ const useDeviceMotionWorld = (world) => {
 	};
 };
 
-export { getRenderFullscreen, createWorldFullscreen, Matter };
+export { createWorld, Matter };
