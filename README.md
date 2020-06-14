@@ -5,10 +5,12 @@
 
 ![sandglass](https://code4sabae.github.io/matter-mjs/samples/sandglass.png)  
 [砂時計 / SandGlass](https://code4sabae.github.io/matter-mjs/samples/sandglass.html)  
+[src on GitHub](https://github.com/code4sabae/matter-mjs/blob/master/samples/sandglass.html)  
 [see Also box2d-es version](https://code4sabae.github.io/box2d-es/samples/sandglass.html)  
 
 ![shubo](https://code4sabae.github.io/matter-mjs/samples/shubo.png)  
-[しゅぼ / Shubo](https://code4sabae.github.io/matter-mjs/samples/shubo.html)  
+[しゅぼ / Shubo](https://code4sabae.github.io/matter-mjs/samples/shuko.html)  
+[src on GitHub](https://github.com/code4sabae/matter-mjs/blob/master/samples/shuko.html)  
 
 # first step
 
