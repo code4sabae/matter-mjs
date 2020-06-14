@@ -8,8 +8,8 @@
 [src on GitHub](https://github.com/code4sabae/matter-mjs/blob/master/samples/sandglass.html)  
 [see Also box2d-es version](https://code4sabae.github.io/box2d-es/samples/sandglass.html)  
 
-![shubo](https://code4sabae.github.io/matter-mjs/samples/shubo.png)  
-[しゅぼ / Shubo](https://code4sabae.github.io/matter-mjs/samples/shuko.html)  
+![shuko](https://code4sabae.github.io/matter-mjs/samples/shuko.png)  
+[しゅこ / Shuko](https://code4sabae.github.io/matter-mjs/samples/shuko.html)  
 [src on GitHub](https://github.com/code4sabae/matter-mjs/blob/master/samples/shuko.html)  
 
 # first step
