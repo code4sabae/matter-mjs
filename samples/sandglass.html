@@ -39,7 +39,7 @@ world.add(createWall(cx + (w + hole) / 4, cy + hgap, w / 4, hw, th));
 
 const bw = w / 60;
 for (let i = 0; i < nballs; i++) {
-	world.add(Bodies.circle(cx + (w - ww * 2) * (Math.random() - .5), ww + (h / 4) * Math.random(), bw));
+	world.add(Bodies.circle(cx + (w - ww * 2) * (Math.random() - .5), ww + (h / 4) * Math.random(), bw, { friction: 0 }));
 }
 
 document.body.onclick = () => {

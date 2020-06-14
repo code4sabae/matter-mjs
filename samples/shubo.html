@@ -1,0 +1,61 @@
+<!DOCTYPE HTML><html lang="ja"><head><meta charset="utf-8">
+<title>shubo - matter.mjs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head><body>
+<script type="module">
+
+import { Matter, createWorld } from "https://js.sabae.cc/matter.mjs";
+const { Bodies, Body } = Matter;
+
+const world = createWorld(document.body);
+const [w, h] = [300, 400];
+world.width = w;
+world.height = h;
+world.gravity.y = .1;
+const st = { isStatic: true };
+const ww = 10;
+world.add(Bodies.rectangle(w / 2, 0, w, ww, st));
+world.add(Bodies.rectangle(w / 2, h, w, ww, st));
+world.add(Bodies.rectangle(0, h / 2, ww, h, st));
+world.add(Bodies.rectangle(w, h / 2, ww, h, st));
+
+world.add(Matter.Bodies.fromVertices(30, 30, Matter.Vertices.fromPath("0 0 100 0 0 100"), st));
+world.add(Matter.Bodies.fromVertices(w - 30, 30, Matter.Vertices.fromPath("-100 0 0 0 0 100"), st));
+world.add(Matter.Bodies.fromVertices(w / 2 + 20, h, Matter.Vertices.fromPath("0 0 400 -50 400 0"), st));
+
+for (let i = 0; i < 5; i++) {
+  for (let j = 0; j < 4; j++) {
+    const x = 80 + j * 50 + 25 * (i % 2);
+    const y = 100 + i * 40;
+    world.add(Matter.Bodies.circle(x, y, 3, st));
+  }
+}
+
+const rnd = (n) => Math.floor(Math.random() * n);
+
+const balls = [];
+for (let i = 0; i < 100; i++) {
+  const x = 30 + rnd(w - 30 * 2);
+  const y = 30 + rnd(h / 2);
+  let b = null;
+  if (rnd(2) == 0) {
+    b = Bodies.circle(x, y, rnd(5) + 5);
+  } else {
+    b = Bodies.rectangle(x, y, rnd(30) + 20, 5);
+  }
+  b.friction = 0;
+  world.add(b);
+  balls.push(b);
+}
+
+document.body.onclick = () => {
+  for (const b of balls) {
+    if (b.position.x < 100) {
+      const f = { x: 0, y: -0.008 * (100 - b.position.x) / 100};
+      Body.applyForce(b, b.position, f);
+    }
+  }
+};
+
+</script>
+</body></html>

@@ -1,17 +1,18 @@
 import canvasutil from "https://code4fukui.github.io/jigaku/lib/jigaku.mjs";
-import Matter from "https://code4sabae.github.io/matter-mjs/matter.min.mjs";
+import Matter from "./matter.min.mjs";
+//import Matter from "https://code4sabae.github.io/matter-mjs/matter.min.mjs";
 const { Engine, Render, Runner, World, Bodies } = Matter;
 
 const startRender = (engine, element) => {
   const canvas = canvasutil.createFullCanvas();
-  
+  const size = [1000, 1000];
+  const render = { background: "#ffffff", size, canvas };
   const drawWorld = (g) => {
     g.setColor(0, 0, 0);
     const bodies = Matter.Composite.allBodies(engine.world);
     for (const body of bodies) {
       if (!body.render.visible) continue;
       const p = body.position;
-      // console.log(body);
       // g.fillCircle(p.x, p.y, 10);
       g.fillStyle = body.render.fillStyle;
       g.beginPath();
@@ -25,9 +26,8 @@ const startRender = (engine, element) => {
     }
   };
 
-  const size = [1000, 1000];
   canvas.draw = (g, cw, ch) => {
-    g.setColor(255, 255, 255);
+    g.fillStyle = render.background;
     g.fillRect(0, 0, cw, ch);
     g.save();
     const [sw, sh] = size;
@@ -42,8 +42,8 @@ const startRender = (engine, element) => {
     // this.world.Step(1 / 60, 1);
     canvas.redraw();
   };
-  setInterval(f, 1 / 60);
-  return size;
+  setInterval(f, 1000 / 60);
+  return render;
 }
 const createRender = (engine, element) => {
   const orgw = 1000; // window.innerWidth;
@@ -86,7 +86,6 @@ const createRender = (engine, element) => {
     }
     */
     const pw = window.devicePixelRatio;
-    console.log(pw);
     if (rw < rh) {
       maxx = orgw * rh;
       maxy = orgh * rh;
@@ -116,7 +115,7 @@ const createWorld = (element) => {
   const world = engine.world;
   // const render = createRender(engine, element);
   // Render.run(render);
-  const size = startRender(engine, element);
+  const render = startRender(engine, element);
   const runner = Runner.create();
   Runner.run(runner, engine);
   return {
@@ -124,16 +123,22 @@ const createWorld = (element) => {
       World.add(world, body);
     },
     get width () {
-      return size[0]; //render.canvas.width;
+      return render.size[0]; //render.canvas.width;
     },
     set width (n) {
-      size[0] = n;
+      render.size[0] = n;
     },
     get height () {
-      return size[1]; // render.canvas.height;
+      return render.size[1]; // render.canvas.height;
     },
     set height (n) {
-      size[1] = n;
+      render.size[1] = n;
+    },
+    get render () {
+      return render;
+    },
+    get engine () {
+      return engine;
     },
     get gravity () {
       return world.gravity;
