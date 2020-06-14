@@ -44,24 +44,25 @@ const startRender = (engine, element) => {
   };
   setInterval(f, 1000 / 60);
   return render;
-}
+};
 const createRender = (engine, element) => {
   const orgw = 1000; // window.innerWidth;
   const orgh = 1000; // window.innerHeight;
   const render = Render.create({
-    element, engine,
+    element,
+    engine,
     options: {
       width: orgw,
       height: orgh,
-      background: '#ffffff',
+      background: "#ffffff",
       wireframes: false,
       hasBounds: true,
-    }
+    },
   });
   element.style.margin = "0";
   element.style.padding = "0";
   element.style.overflow = "hidden";
-  
+
   window.onresize = () => {
     const w = window.innerWidth;
     const h = window.innerHeight;
@@ -102,9 +103,9 @@ const createRender = (engine, element) => {
     element.style.top = offy + "px";
     */
     console.log(offx, offy, orgw, orgh, w, h, maxx, maxy);
-    
+
     //render.bounds = { min: { x: 0, y: 0 }, max: { x: maxx, y: maxy}};
-    render.bounds = { min: { x: offx, y: offy }, max: { x: maxx, y: maxy}};
+    render.bounds = { min: { x: offx, y: offy }, max: { x: maxx, y: maxy } };
   };
   window.onresize();
   return render;
@@ -119,54 +120,60 @@ const createWorld = (element) => {
   const runner = Runner.create();
   Runner.run(runner, engine);
   return {
-    add (body) {
+    add(body) {
       World.add(world, body);
     },
-    get width () {
+    get width() {
       return render.size[0]; //render.canvas.width;
     },
-    set width (n) {
+    set width(n) {
       render.size[0] = n;
     },
-    get height () {
+    get height() {
       return render.size[1]; // render.canvas.height;
     },
-    set height (n) {
+    set height(n) {
       render.size[1] = n;
     },
-    get render () {
+    get render() {
       return render;
     },
-    get engine () {
+    get engine() {
       return engine;
     },
-    get gravity () {
+    get gravity() {
       return world.gravity;
     },
-    useRealGravity () {
+    useRealGravity() {
       useDeviceMotionWorld(world);
-    }
+    },
   };
 };
 
 const useDeviceMotionWorld = (world) => {
-	if (window.DeviceMotionEvent && DeviceMotionEvent.requestPermission && typeof DeviceMotionEvent.requestPermission === 'function') {
-		DeviceMotionEvent.requestPermission()
-	}
-	if (window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission && typeof DeviceOrientationEvent.requestPermission === 'function') {
-		DeviceOrientationEvent.requestPermission();
-	}
-	// Androidは逆!?
-	// window.addEventListener("devicemotion", (e) => {
+  if (
+    window.DeviceMotionEvent && DeviceMotionEvent.requestPermission &&
+    typeof DeviceMotionEvent.requestPermission === "function"
+  ) {
+    DeviceMotionEvent.requestPermission();
+  }
+  if (
+    window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission &&
+    typeof DeviceOrientationEvent.requestPermission === "function"
+  ) {
+    DeviceOrientationEvent.requestPermission();
+  }
+  // Androidは逆!?
+  // window.addEventListener("devicemotion", (e) => {
   const yflg = window.navigator.userAgent.indexOf("Android") >= 0 ? -1 : 1;
-	window.ondevicemotion = (e) => {
-		if (e.accelerationIncludingGravity.x === null) return;
-		// ball.WakeUp();
-		var xg = e.accelerationIncludingGravity.x;
+  window.ondevicemotion = (e) => {
+    if (e.accelerationIncludingGravity.x === null) return;
+    // ball.WakeUp();
+    var xg = e.accelerationIncludingGravity.x;
     var yg = e.accelerationIncludingGravity.y * yflg;
     world.gravity.x = xg / 9.8;
     world.gravity.y = -yg / 9.8;
-	};
+  };
 };
 
 export { createWorld, Matter };
