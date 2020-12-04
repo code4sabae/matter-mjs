@@ -1,0 +1,58 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<title>BigRock - matter.mjs</title>
+<meta name="viewport" content="width=device-width">
+</head><body>
+<script type="module">
+
+import { Matter, createWorld } from "https://js.sabae.cc/matter.mjs";
+const { Bodies } = Matter;
+
+import { rnd } from "https://code4sabae.github.io/js/rnd.js";
+
+const world = createWorld(document.body);
+world.add(Bodies.rectangle(100, 450, 30, 800, { isStatic: true }));
+world.add(Bodies.rectangle(900, 450, 30, 800, { isStatic: true }));
+world.add(Bodies.rectangle(500, 835, 800, 30, { isStatic: true }));
+
+const balls = [];
+const fallBalls = (w, n) => {
+  for (let i = 0; i < n; i++) {
+    const b = Bodies.circle(500 + rnd(300) - 150, -rnd(600), w);
+    world.add(b);
+    balls.push(b);
+  }
+};
+const clearBalls = () => {
+  balls.forEach(b => world.remove(b));
+  balls.length = 0;
+};
+large.onclick = () => fallBalls(100, 10);
+middle.onclick = () => fallBalls(50, 20);
+small.onclick = () => fallBalls(20, 100);
+reset.onclick = () => clearBalls();
+
+</script>
+<style>
+body {
+  text-align: center;
+}
+#buttons {
+  z-index: 10;
+  width: 100vw;
+  position: absolute;
+  bottom: .5vh;
+  text-align: center;
+  margin: .1vh auto;
+}
+button {
+  font-size: 5vw;
+  margin: 0 3vw;
+}
+</style>
+<div id="buttons">
+<button id="large">大</button>
+<button id="middle">中</button>
+<button id="small">小</button>
+<button id="reset">消</button>
+</div>
+</body></html>
