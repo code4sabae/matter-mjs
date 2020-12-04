@@ -123,6 +123,9 @@ const createWorld = (element) => {
     add(body) {
       World.add(world, body);
     },
+    remove(body) {
+      World.remove(world, body);
+    },
     get width() {
       return render.size[0]; //render.canvas.width;
     },
